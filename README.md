@@ -1,2 +1,0 @@
-# SimpleReactNewsFeed
-Created with CodeSandbox
