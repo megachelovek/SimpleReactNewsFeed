@@ -1,7 +1,7 @@
 {
   "name": "reactnewsfeedcomponent",
   "version": "1.0.0",
-  "description": "",
+  "description": "Simple Example with react",
   "keywords": [],
   "main": "src/index.js",
   "dependencies": {

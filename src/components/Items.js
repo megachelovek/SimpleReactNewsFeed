@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import * as localJsonData from "./SimpleDataJson.json";
 
 class Items extends Component {
   constructor(props) {
@@ -35,25 +36,45 @@ class Items extends Component {
   }
 
   getItems() {
+    let url = "https://12x87.codesandbox.io/news.json"; // Change this url
     if (
       localStorage.getItem("news") === null ||
       localStorage.getItem("news") == null ||
       localStorage.getItem("news") === "null" ||
       localStorage.getItem("news") === "undefined"
     ) {
-      fetch("https://12x87.codesandbox.io/news.json")
+      fetch(url)
         .then(response => {
-          return response.json();
+          if (!response.ok) throw new Error(response.status);
+          else return response.json();
         })
         .then(data => {
           localStorage.setItem("news", JSON.stringify(data));
           localStorage.setItem("oldNews", JSON.stringify(data));
           this.filter();
           this.props.newsItems();
+        })
+        .catch(error => {
+          console.log(
+            "Error in fetch json from server, will be loaded local simple data. Error = " +
+              error
+          );
+          this.loadLocalData();
         });
     } else {
       this.props.newsItems();
     }
+  }
+
+  loadLocalData() {
+    let nextNews = [];
+    for (var i in localJsonData.default) {
+      nextNews.push(localJsonData[i]);
+    }
+    localStorage.setItem("news", JSON.stringify(nextNews));
+    localStorage.setItem("oldNews", JSON.stringify(nextNews));
+    this.filter();
+    this.props.newsItems();
   }
 
   updateItem(item) {
